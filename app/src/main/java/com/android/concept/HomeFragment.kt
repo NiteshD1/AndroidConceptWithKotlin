@@ -1,15 +1,17 @@
 package com.android.concept
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 
-class DemoFragment : Fragment() {
+class HomeFragment : Fragment() {
+
+    private lateinit var syncDataWithActivity: SyncDataWithActivity
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -30,12 +32,33 @@ class DemoFragment : Fragment() {
         // Inflate the layout for this fragment
         println("Fragment : onCreateView")
 
-        return inflater.inflate(R.layout.fragment_demo, container, false)
+        var view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        var button : Button = view.findViewById(R.id.button)
+
+        button.setOnClickListener(View.OnClickListener {
+            syncDataWithActivity.demoFunction()
+        })
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         println("Fragment : onActivityCreated")
+
+    }
+
+    fun initializeInterfaceObject(syncDataWithActivity: SyncDataWithActivity){
+        this.syncDataWithActivity = syncDataWithActivity
+    }
+
+    private fun addFragment(fragment: Fragment) {
+
+        var fragmentManager = childFragmentManager
+        var fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.frameLayout,fragment)
+        fragmentTransaction.commit()
+        println("Activity : addFragment First Fragment")
 
     }
 
