@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,SyncDataWithActivi
     private lateinit var binding: ActivityMainBinding
     var fragmentManager = supportFragmentManager
     private lateinit var fragmentTransaction : FragmentTransaction
-    private lateinit var homeFragment: HomeFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +22,6 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,SyncDataWithActivi
         val view = binding.root
         setContentView(view)
         println("Activity : onCreate")
-        homeFragment = HomeFragment()
-        //addFragment(homeFragment)
 
         fragmentManager.addFragmentOnAttachListener(
             FragmentOnAttachListener{fragmentManager, fragment ->
@@ -38,9 +35,9 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,SyncDataWithActivi
     }
 
     private fun setupButtonListeners() {
-        binding.buttonHome.setOnClickListener(this)
-        binding.buttonFirst.setOnClickListener(this)
-        binding.buttonSecond.setOnClickListener(this)
+//        binding.buttonHome.setOnClickListener(this)
+//        binding.buttonFirst.setOnClickListener(this)
+//        binding.buttonSecond.setOnClickListener(this)
 
     }
 
@@ -108,19 +105,18 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,SyncDataWithActivi
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
-        fragmentManager.popBackStack("back_stack", POP_BACK_STACK_INCLUSIVE)
-
+        super.onBackPressed()
+        //fragmentManager.popBackStack("back_stack", POP_BACK_STACK_INCLUSIVE)
     }
 
     override fun onClick(v: View?) {
-        if (v != null) {
-            when(v.id){
-                R.id.button_home -> addFragment(HomeFragment())
-                R.id.button_first -> addFragment(FirstFragment())
-                R.id.button_second -> addFragment(SecondFragment())
-            }
-        }
+//        if (v != null) {
+//            when(v.id){
+//                R.id.button_home -> addFragment(HomeFragment())
+//                R.id.button_first -> addFragment(FirstFragment())
+//                R.id.button_second -> addFragment(SecondFragment())
+//            }
+//        }
     }
 
     override fun demoFunction() {

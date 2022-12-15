@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green"
-    android:alpha="0.5"
-    tools:context=".HomeFragment">
+
+    tools:context=".SecondFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -16,5 +16,17 @@
         android:textColor="@color/white"
         android:gravity="center_horizontal"
         android:text="Second Fragment" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="32sp"
+        android:id="@+id/textViewUserName"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="Default UserName" />
+
+
 
 </FrameLayout>

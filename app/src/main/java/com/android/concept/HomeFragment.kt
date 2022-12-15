@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.findNavController
+import com.android.concept.databinding.FragmentFirstBinding
+import com.android.concept.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var syncDataWithActivity: SyncDataWithActivity
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,14 +36,21 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         println("Fragment : onCreateView")
 
-        var view = inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        var button : Button = view.findViewById(R.id.button)
 
-        button.setOnClickListener(View.OnClickListener {
-            syncDataWithActivity.demoFunction()
+        setupClickListners()
+        return binding.root
+    }
+
+    private fun setupClickListners() {
+        binding.buttonFirst.setOnClickListener(View.OnClickListener {
+            it.findNavController().navigate(R.id.action_homeFragment_to_firstFragment)
         })
-        return view
+        binding.buttonSecond.setOnClickListener(View.OnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToSecondFragment("Naman")
+            it.findNavController().navigate(action)
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
