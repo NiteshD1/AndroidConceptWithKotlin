@@ -18,7 +18,7 @@ import com.android.concept.utils.Utils
 import com.google.android.material.navigation.NavigationView
 
 
-class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var binding: ActivityMainBinding
@@ -33,85 +33,12 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         println("Activity : onCreate")
 
         supportActionBar?.title = "Android Demo"
-        actionBarDrawerToggle =
-            ActionBarDrawerToggle(this, binding.drawerLayout, R.string.nav_open, R.string.nav_close)
-
-        binding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
-        actionBarDrawerToggle.syncState()
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        binding.navigationView.setNavigationItemSelectedListener(this)
-
-        setupBottomNavigationView()
-    }
-
-    private fun setupBottomNavigationView() {
-        val homeFragment = HomeFragment()
-        val settingFragment = SettingFragment()
-        val profileFragment = ProfileFragment()
-
-        setCurrentFragment(homeFragment)
-
-        binding.bottomNavigation.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.item_home -> setCurrentFragment(homeFragment)
-                R.id.item_setting -> setCurrentFragment(settingFragment)
-                R.id.item_profile -> setCurrentFragment(profileFragment)
-
-            }
-//            when(it.itemId){
-//                R.id.item_home ->{
-//                    Navigation.findNavController(this,R.id.fragmentContainerView)
-//                        .navigate(R.id.action_global_homeFragment)
-//                }
-//                R.id.item_setting ->{
-//                    Navigation.findNavController(this,R.id.fragmentContainerView)
-//                        .navigate(R.id.action_global_settingFragment)
-//                }
-//                R.id.item_profile ->{
-//                Navigation.findNavController(this,R.id.fragmentContainerView)
-//                    .navigate(R.id.action_global_firstFragment)
-//            }
-//            }
-            true
-        }
-    }
-
-    private fun setCurrentFragment(fragment: Fragment) {
-
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainerView,fragment)
-            commit()
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu,menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
-            return true
-        }else when(item.itemId){
-            R.id.item_home -> {
-                Utils.showToast("Home Clicked")
-                return true
-            }
-            R.id.item_setting -> {
-                Utils.showToast("Setting Clicked")
-                return true
-            }
-            R.id.item_logout -> {
-                Utils.showToast("Logout Clicked")
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
 
     }
+
+
+
+
 
 
 
@@ -147,35 +74,12 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
 
     override fun onBackPressed() {
-        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        }else{
-            super.onBackPressed()
-        }
+
+        super.onBackPressed()
 
     }
 
 
 
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.item_home ->{
-                Utils.showToast("Home Clicked")
-                Navigation.findNavController(this,R.id.fragmentContainerView)
-                    .navigate(R.id.action_global_homeFragment)
-            }
-            R.id.item_setting ->{
-                Utils.showToast("Setting Clicked")
-                Navigation.findNavController(this,R.id.fragmentContainerView)
-                    .navigate(R.id.action_global_settingFragment)
-            }
-            R.id.item_logout ->{
-                Utils.showToast("Logout Clicked")
-            }
-        }
-
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
 }
