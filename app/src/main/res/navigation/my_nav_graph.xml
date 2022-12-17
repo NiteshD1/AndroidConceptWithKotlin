@@ -28,6 +28,6 @@
         android:name="com.android.concept.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
-    <action android:id="@+id/action_global_settingFragment" app:destination="@id/settingFragment" /><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/>
+    <action android:id="@+id/action_global_settingFragment" app:destination="@id/settingFragment" /><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/><action android:id="@+id/action_global_firstFragment" app:destination="@id/firstFragment"/>
 
 </navigation>

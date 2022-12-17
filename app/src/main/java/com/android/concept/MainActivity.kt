@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 
 import androidx.fragment.app.FragmentOnAttachListener
 import androidx.fragment.app.FragmentTransaction
@@ -42,6 +43,47 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
         binding.navigationView.setNavigationItemSelectedListener(this)
 
+        setupBottomNavigationView()
+    }
+
+    private fun setupBottomNavigationView() {
+        val homeFragment = HomeFragment()
+        val settingFragment = SettingFragment()
+        val profileFragment = ProfileFragment()
+
+        setCurrentFragment(homeFragment)
+
+        binding.bottomNavigation.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.item_home -> setCurrentFragment(homeFragment)
+                R.id.item_setting -> setCurrentFragment(settingFragment)
+                R.id.item_profile -> setCurrentFragment(profileFragment)
+
+            }
+//            when(it.itemId){
+//                R.id.item_home ->{
+//                    Navigation.findNavController(this,R.id.fragmentContainerView)
+//                        .navigate(R.id.action_global_homeFragment)
+//                }
+//                R.id.item_setting ->{
+//                    Navigation.findNavController(this,R.id.fragmentContainerView)
+//                        .navigate(R.id.action_global_settingFragment)
+//                }
+//                R.id.item_profile ->{
+//                Navigation.findNavController(this,R.id.fragmentContainerView)
+//                    .navigate(R.id.action_global_firstFragment)
+//            }
+//            }
+            true
+        }
+    }
+
+    private fun setCurrentFragment(fragment: Fragment) {
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainerView,fragment)
+            commit()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
