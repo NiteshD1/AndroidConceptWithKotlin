@@ -17,7 +17,7 @@ import com.android.concept.utils.Utils
 import com.google.android.material.navigation.NavigationView
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.OnNavigationItemSelectedListener,SyncDataWithActivity {
+class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var binding: ActivityMainBinding
@@ -32,28 +32,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
         println("Activity : onCreate")
 
         supportActionBar?.title = "Android Demo"
-
-
         actionBarDrawerToggle =
             ActionBarDrawerToggle(this, binding.drawerLayout, R.string.nav_open, R.string.nav_close)
 
-        // pass the Open and Close toggle for the drawer layout listener
-        // to toggle the button
         binding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
-        // to make the Navigation drawer icon always appear on the action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.navigationView.setNavigationItemSelectedListener(this)
-        fragmentManager.addFragmentOnAttachListener(
-            FragmentOnAttachListener{fragmentManager, fragment ->
-
-                if(fragment == fragmentManager.findFragmentByTag("home")){
-                    println("Home fragment is Attached")
-                }
-            }
-        )
 
     }
 
@@ -84,45 +71,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
 
     }
 
-    private fun setupButtonListeners() {
-//        binding.buttonHome.setOnClickListener(this)
-//        binding.buttonFirst.setOnClickListener(this)
-//        binding.buttonSecond.setOnClickListener(this)
 
-    }
 
-//    private fun addFragment(fragment: Fragment) {
-//        fragmentTransaction = fragmentManager.beginTransaction()
-//
-//        if(fragment is HomeFragment){
-//            fragmentTransaction.add(R.id.frameLayout,fragment,"home")
-//            fragmentTransaction.addToBackStack("back_stack")
-//            fragment.initializeInterfaceObject(this)
-//        }else{
-//            fragmentTransaction.add(R.id.frameLayout,fragment)
-//            fragmentTransaction.addToBackStack("back_stack")
-//        }
-//
-//        fragmentTransaction.commit()
-//        println("Activity : addFragment Demo Fragment")
-//
-//    }
-//
-//    private fun replaceFragment(fragment: Fragment) {
-//        fragmentTransaction = fragmentManager.beginTransaction()
-//        fragmentTransaction.replace(R.id.frameLayout,fragment)
-//        fragmentTransaction.commit()
-//        println("Activity : replace Fragment")
-//
-//    }
-//
-//    private fun removeFragment(fragment: Fragment) {
-//        fragmentTransaction = fragmentManager.beginTransaction()
-//        fragmentTransaction.remove(fragment)
-//        fragmentTransaction.commit()
-//        println("Activity : replace Fragment")
-//
-//    }
 
     override fun onStart() {
         super.onStart()
@@ -161,22 +111,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,NavigationView.On
             super.onBackPressed()
         }
 
-        //fragmentManager.popBackStack("back_stack", POP_BACK_STACK_INCLUSIVE)
     }
 
-    override fun onClick(v: View?) {
-//        if (v != null) {
-//            when(v.id){
-//                R.id.button_home -> addFragment(HomeFragment())
-//                R.id.button_first -> addFragment(FirstFragment())
-//                R.id.button_second -> addFragment(SecondFragment())
-//            }
-//        }
-    }
 
-    override fun demoFunction() {
-        println("Activity : Demo Function Called")
-    }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){

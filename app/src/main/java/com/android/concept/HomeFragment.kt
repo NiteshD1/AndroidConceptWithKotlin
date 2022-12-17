@@ -14,7 +14,7 @@ import com.android.concept.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var syncDataWithActivity: SyncDataWithActivity
+
     private lateinit var binding: FragmentHomeBinding
 
     override fun onAttach(context: Context) {
@@ -59,9 +59,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    fun initializeInterfaceObject(syncDataWithActivity: SyncDataWithActivity){
-        this.syncDataWithActivity = syncDataWithActivity
-    }
+
 
     private fun addFragment(fragment: Fragment) {
 
