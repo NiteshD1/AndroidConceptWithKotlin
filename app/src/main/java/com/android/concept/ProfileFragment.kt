@@ -1,18 +1,17 @@
 package com.android.concept
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import com.android.concept.databinding.FragmentFirstBinding
+import com.android.concept.databinding.FragmentProfileBinding
 
 
-class FirstFragment : Fragment() {
-    private lateinit var binding: FragmentFirstBinding
+class ProfileFragment : Fragment() {
+    private lateinit var binding: FragmentProfileBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -33,7 +32,7 @@ class FirstFragment : Fragment() {
         // Inflate the layout for this fragment
         println("Fragment : onCreateView")
 
-        binding = FragmentFirstBinding.inflate(inflater, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         binding.buttonSetting.setOnClickListener(View.OnClickListener {
             it.findNavController().navigate(R.id.action_global_settingFragment)

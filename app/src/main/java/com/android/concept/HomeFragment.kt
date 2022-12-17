@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.findNavController
-import com.android.concept.databinding.FragmentFirstBinding
+
 import com.android.concept.databinding.FragmentHomeBinding
 
 
@@ -39,19 +39,11 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
 
-        setupClickListners()
+
         return binding.root
     }
 
-    private fun setupClickListners() {
-        binding.buttonFirst.setOnClickListener(View.OnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_firstFragment)
-        })
-        binding.buttonSecond.setOnClickListener(View.OnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToSecondFragment("Naman")
-            it.findNavController().navigate(action)
-        })
-    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

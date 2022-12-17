@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@color/orange"
 
-    tools:context=".SecondFragment">
+    tools:context=".ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -15,18 +15,13 @@
         android:layout_marginTop="24dp"
         android:textColor="@color/white"
         android:gravity="center_horizontal"
-        android:text="Second Fragment" />
+        android:text="Profile Fragment" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="32sp"
-        android:id="@+id/textViewUserName"
-        android:layout_marginTop="24dp"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:text="Default UserName" />
-
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonSetting"
+        android:text="Setting"
+        android:layout_gravity="center"/>
 
 </FrameLayout>
