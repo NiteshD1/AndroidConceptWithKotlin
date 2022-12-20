@@ -15,8 +15,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
-    var fragmentManager = supportFragmentManager
-    private lateinit var fragmentTransaction : FragmentTransaction
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,58 +25,7 @@ class MainActivity : AppCompatActivity(){
 
         supportActionBar?.title = "Android Demo"
 
-        setupBottomSheetModal()
-        setupBottomSheetPersistent()
-    }
 
-    private fun setupBottomSheetPersistent() {
-
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bootomSheetPersistent.bottomSheet)
-        binding.buttonBottomSheetPersistent.setOnClickListener(View.OnClickListener {
-            if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED){
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }else{
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        })
-
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when(newState){
-                    BottomSheetBehavior.STATE_COLLAPSED -> Utils.showToast("Collapsed")
-                    BottomSheetBehavior.STATE_EXPANDED -> Utils.showToast("Expanded")
-                    BottomSheetBehavior.STATE_DRAGGING -> Utils.showToast("Dragging")
-                    else -> Utils.showToast("None")
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-
-        })
-
-    }
-
-    private fun setupBottomSheetModal() {
-        binding.buttonBottomSheetModal.setOnClickListener(View.OnClickListener {
-            val bottomSheetDialog = BottomSheetDialog(this)
-
-            val view = layoutInflater.inflate(R.layout.bottom_sheet_modal,null)
-
-            val button : Button = view.findViewById(R.id.buttonDismiss)
-
-            button.setOnClickListener {
-                bottomSheetDialog.dismiss()
-            }
-
-            bottomSheetDialog.setCancelable(false)
-
-            bottomSheetDialog.setContentView(view)
-
-            bottomSheetDialog.show()
-
-        })
     }
 
 
