@@ -26,6 +26,16 @@ class MainActivity : AppCompatActivity(){
         supportActionBar?.title = "Android Demo"
 
 
+        setupCustomDialogFragment()
+    }
+
+    private fun setupCustomDialogFragment() {
+        binding.buttonEnrollNow.setOnClickListener(View.OnClickListener {
+
+            CustomDialog.newInstance(getString(R.string.dialog_heading),getString(R.string.dialog_description))
+                .show(supportFragmentManager,"CustomDialogFragment")
+
+        })
     }
 
 
