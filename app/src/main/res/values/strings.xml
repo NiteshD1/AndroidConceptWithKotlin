@@ -6,7 +6,9 @@
     <string name="nav_close">Close</string>
     <string name="bottom_sheet_model_title">Bottom Sheet Model!</string>
     <string name="bottom_sheet_persistent_title">Bottom Sheet Persistent!</string>
-
     <string name="bottom_sheet_description">A BottomSheet is a component that is used to display some information by sliding the view up from the bottom of the screen and also, you can hide this BottomSheet when the message is conveyed to the users. This is a nice way of conveying some message or performing some task in Android.</string>
+
+    <string name="dialog_heading">Proceed With Payment…</string>
+    <string name="dialog_description">Press Yes to proceed with the Transaction. Please do not press back, while transaction is processing.</string>
 
 </resources>
