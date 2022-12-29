@@ -23,24 +23,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.concept.databinding.ActivityMainBinding
 import com.android.concept.utils.Utils
+import com.bumptech.glide.Glide
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.DexterError
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
-
-
-    private val TAG = "PermissionDemo"
-    private val REQUEST_CODE = 101
-
-
-    private lateinit var builder: Notification.Builder
-    private lateinit var notificationChannel: NotificationChannel
-    private lateinit var notificationManager: NotificationManager
 
     private lateinit var binding: ActivityMainBinding
 
@@ -60,14 +53,44 @@ class MainActivity : AppCompatActivity() {
     private fun setupClickListners() {
         binding.buttonRequestPermission.setOnClickListener(View.OnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                //askPermission()
                 requestPermissions()
+
             }
         })
 
-        binding.buttonSendNotification.setOnClickListener(View.OnClickListener {
-            addNotification()
+        binding.buttonLoadImage.setOnClickListener(View.OnClickListener {
+            setupGlide()
         })
+
+        binding.buttonLoadCircleImage.setOnClickListener(View.OnClickListener {
+            setupCircleImage()
+        })
+
+    }
+
+    private fun setupCircleImage() {
+        var url = "https://picsum.photos/500/300"
+
+        Timber.d("Inside Circle Image Function")
+        Timber.tag("APP").d("Inside Circle Image")
+        Timber.e("Some error happened")
+
+        Glide.with(this)
+            .load(url)
+            .centerCrop()
+            .placeholder(R.drawable.placeholder_image)
+            .into(binding.circeImageView)
+    }
+
+    private fun setupGlide() {
+
+        var url = "https://picsum.photos/500/300"
+
+        Glide.with(this)
+            .load(url)
+            .centerCrop()
+            .placeholder(R.drawable.placeholder_image)
+            .into(binding.imageView)
     }
 
 
@@ -112,71 +135,6 @@ class MainActivity : AppCompatActivity() {
             .onSameThread().check()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_CODE -> {
-
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
-                    Utils.showToast("Permission Not Granted!")
-
-                } else {
-                    Utils.showToast("Permission Granted!")
-                }
-            }
-        }
-    }
-
-    private fun addNotification() {
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            notificationChannel =
-                NotificationChannel("123", "this is test Notification", NotificationManager.IMPORTANCE_HIGH)
-            notificationManager.createNotificationChannel(notificationChannel)
-            builder =
-                Notification.Builder(this, "123").setContentTitle("Notification title")
-                    .setContentText("Test Notification")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentIntent(pendingIntent)
-        }
-        notificationManager.notify(12345, builder.build())
-    }
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private fun askPermission() {
-        val permission = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.POST_NOTIFICATIONS
-        )
-
-        if(permission == PackageManager.PERMISSION_GRANTED){
-            Utils.showToast("Permission Already Given")
-        }else{
-            if(ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS)
-            ){
-                showDialogForPermissionExplaination()
-            }else{
-                if(Utils.isPermissionAskedFirstTime){
-                    makeRequest()
-                    Utils.isPermissionAskedFirstTime = false
-                }else{
-                    showSettingsDialog()
-                }
-            }
-        }
-    }
-
     private fun showSettingsDialog() {
         val builder = AlertDialog.Builder(this@MainActivity)
 
@@ -197,30 +155,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private fun showDialogForPermissionExplaination() {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage("Notification permission is required for this app to send notifications.")
-            .setTitle("Permission required")
 
-        builder.setPositiveButton(
-            "OK"
-        ) { dialog, id ->
-            Log.i(TAG, "Clicked")
-            makeRequest()
-        }
-
-        val dialog = builder.create()
-        dialog.show()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private fun makeRequest() {
-
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-            REQUEST_CODE
-        )
-    }
 }
