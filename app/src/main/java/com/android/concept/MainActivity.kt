@@ -12,6 +12,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -35,7 +36,9 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var thread: Thread
     private lateinit var binding: ActivityMainBinding
+    var threadCounter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +49,33 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Android Demo"
 
+        setupClickListners()
     }
 
+    private fun setupClickListners() {
+        binding.buttonStart.setOnClickListener {
 
+
+
+            thread = Thread {
+                for(i in 1..10){
+                    SystemClock.sleep(1000)
+                    threadCounter = i
+
+                    runOnUiThread{
+                        binding.textView.text = threadCounter.toString()
+                    }
+                }
+            }
+            thread.start()
+
+        }
+
+
+        binding.buttonStop.setOnClickListener{
+            thread.stop()
+        }
+    }
 
 
 }
