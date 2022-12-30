@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var thread: Thread
     private lateinit var binding: ActivityMainBinding
     var threadCounter = 0
+    var isThreadRunning = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,11 +57,11 @@ class MainActivity : AppCompatActivity() {
         binding.buttonStart.setOnClickListener {
 
 
-
+            isThreadRunning = true
             thread = Thread {
-                for(i in 1..10){
+                while (isThreadRunning){
                     SystemClock.sleep(1000)
-                    threadCounter = i
+                    threadCounter += 1
 
                     runOnUiThread{
                         binding.textView.text = threadCounter.toString()
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.buttonStop.setOnClickListener{
-            thread.stop()
+            isThreadRunning = false
         }
     }
 
