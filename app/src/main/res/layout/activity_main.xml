@@ -25,19 +25,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Start"
+            android:text="Start Task 1"
             android:id="@+id/buttonStart"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Stop"
+            android:text="Stop Task 1"
             android:id="@+id/buttonStop"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Start Task 2"
+            android:id="@+id/buttonStart2"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Stop Task 2"
+            android:id="@+id/buttonStop2"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0"
+            android:layout_marginTop="8dp"
             android:textStyle="bold"
             android:textSize="32sp"
             android:textAlignment="center"

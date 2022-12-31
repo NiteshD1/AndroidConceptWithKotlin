@@ -40,6 +40,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     var threadCounter = 0
     var isThreadRunning = false;
+    var isThreadRunning1 = false;
+
+    private lateinit var runnable: Runnable
+    private lateinit var runnable1: Runnable
+
+    private lateinit var backgroundThread: BackgroundThread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,31 +56,58 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Android Demo"
 
+        Timber.d("Current Thread Id : " + Thread.currentThread().id.toString())
         setupClickListners()
     }
 
     private fun setupClickListners() {
-        binding.buttonStart.setOnClickListener {
+        backgroundThread = BackgroundThread()
+        backgroundThread.start()
 
+        runnable = Runnable{
+            while (isThreadRunning){
+                SystemClock.sleep(1000)
+                threadCounter += 1
+                Timber.d("Current Thread Id : " + Thread.currentThread().id.toString())
 
-            isThreadRunning = true
-            thread = Thread {
-                while (isThreadRunning){
-                    SystemClock.sleep(1000)
-                    threadCounter += 1
-
-                    runOnUiThread{
-                        binding.textView.text = threadCounter.toString()
-                    }
+                runOnUiThread{
+                    binding.textView.text = threadCounter.toString()
                 }
             }
-            thread.start()
+        }
 
+        runnable1 = Runnable{
+            while (isThreadRunning1){
+                SystemClock.sleep(1000)
+                threadCounter += 5
+                Timber.d("Current Thread Id : " + Thread.currentThread().id.toString())
+
+                runOnUiThread{
+                    binding.textView.text = threadCounter.toString()
+                }
+            }
+        }
+
+        binding.buttonStart.setOnClickListener {
+            isThreadRunning = true
+
+            backgroundThread.addTaskToBackgroundThread(runnable)
         }
 
 
         binding.buttonStop.setOnClickListener{
             isThreadRunning = false
+            backgroundThread.removeTaskFromBackgroundThread(runnable)
+        }
+
+        binding.buttonStart2.setOnClickListener{
+            isThreadRunning1 = true
+            backgroundThread.addTaskToBackgroundThread(runnable1)
+        }
+
+        binding.buttonStop2.setOnClickListener{
+            isThreadRunning1 = false
+            backgroundThread.removeTaskFromBackgroundThread(runnable1)
         }
     }
 
