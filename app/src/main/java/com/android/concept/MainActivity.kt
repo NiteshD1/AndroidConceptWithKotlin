@@ -10,9 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.SystemClock
+import android.os.*
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -32,6 +30,7 @@ import com.karumi.dexter.listener.DexterError
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import timber.log.Timber
+import java.util.concurrent.Executors
 
 
 class MainActivity : AppCompatActivity() {
@@ -56,32 +55,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListners() {
+        val myAsyncTask = MyAsyncTask()
+        val executer = Executors.newSingleThreadExecutor()
+        val handler = Handler(Looper.getMainLooper())
+
         binding.buttonStart.setOnClickListener {
-
-
             isThreadRunning = true
+            //myAsyncTask.execute(0)
 
-            thread = Thread {
+            executer.execute{
                 while (isThreadRunning){
                     SystemClock.sleep(1000)
                     threadCounter += 1
                     Timber.d("Current Thread id : "+Thread.currentThread().id.toString())
 
-
-                    runOnUiThread{
+                    handler.post{
                         binding.textView.text = threadCounter.toString()
                     }
                 }
             }
-            thread.start()
-
         }
 
 
         binding.buttonStop.setOnClickListener{
             isThreadRunning = false
+            executer.shutdown() // if you call this method, you can not use this executer again with start button
         }
     }
 
+    inner class MyAsyncTask : AsyncTask<Int, Int, Unit>() {
+
+        override fun doInBackground(vararg params: Int?) {
+            var counter = params[0]
+            while (isThreadRunning){
+                SystemClock.sleep(1000)
+                counter = counter?.plus(1)
+                Timber.d("Current Thread id : "+Thread.currentThread().id.toString())
+                publishProgress(counter)
+            }
+        }
+
+        override fun onProgressUpdate(vararg values: Int?) {
+            super.onProgressUpdate(*values)
+
+            binding.textView.text = values[0].toString()
+        }
+
+    }
 
 }
