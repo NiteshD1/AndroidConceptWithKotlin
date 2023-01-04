@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.android.concept.databinding.ActivityMainBinding
 import com.android.concept.utils.Utils
 import com.bumptech.glide.Glide
@@ -29,6 +30,7 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.DexterError
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.coroutines.*
 import timber.log.Timber
 import java.util.concurrent.Executors
 
@@ -51,35 +53,85 @@ class MainActivity : AppCompatActivity() {
 
         Timber.d("Current Thread id : "+Thread.currentThread().id.toString())
 
+        //coroutineDemo()
+        //dispatchersDemo()
+//        runBlocking {
+//            startCounter()
+//        }
+
+        //asyncDemo()
         setupClickListners()
     }
 
+    private fun asyncDemo() {
+        GlobalScope.launch {
+            val str = async{ receiveDataFromServer()}
+            Timber.d(str.await())
+        }
+    }
+
+    suspend fun receiveDataFromServer(): String{
+        delay(5000)
+        return "Data Fetched From Server"
+    }
+
+    private fun dispatchersDemo() {
+//        GlobalScope.launch(Dispatchers.Main) {
+//            startCounter()
+//        }
+
+//        GlobalScope.launch(Dispatchers.IO) {
+//            startCounter()
+//        }
+//
+//        GlobalScope.launch(Dispatchers.Default) {
+//            startCounter()
+//
+//        }
+
+        GlobalScope.launch(Dispatchers.Unconfined) {
+            startCounter()
+
+        }
+    }
+
+    private fun coroutineDemo() {
+
+//        GlobalScope.launch {
+//            startCounter()
+//        }
+
+        lifecycleScope.launch{
+           startCounter()
+        }
+    }
+
+    suspend fun startCounter(){
+        while (true){
+            //delay(1000)
+            Thread.sleep(1000)
+            threadCounter += 1
+            Timber.d("Current Thread id : "+Thread.currentThread().id.toString())
+            binding.textView.text = threadCounter.toString()
+        }
+    }
     private fun setupClickListners() {
-        val myAsyncTask = MyAsyncTask()
-        val executer = Executors.newSingleThreadExecutor()
-        val handler = Handler(Looper.getMainLooper())
 
-        binding.buttonStart.setOnClickListener {
-            isThreadRunning = true
-            //myAsyncTask.execute(0)
-
-            executer.execute{
-                while (isThreadRunning){
-                    SystemClock.sleep(1000)
-                    threadCounter += 1
-                    Timber.d("Current Thread id : "+Thread.currentThread().id.toString())
-
-                    handler.post{
-                        binding.textView.text = threadCounter.toString()
-                    }
-                }
-            }
+        binding.buttonStartTestActivity.setOnClickListener{
+            startActivity(Intent(this,TestActivity::class.java))
+            finish()
         }
 
+        var job : Job? = null
+        binding.buttonStart.setOnClickListener {
+            isThreadRunning = true
+
+            job = GlobalScope.launch { startCounter() }
+        }
 
         binding.buttonStop.setOnClickListener{
             isThreadRunning = false
-            executer.shutdown() // if you call this method, you can not use this executer again with start button
+            job?.cancel()
         }
     }
 
