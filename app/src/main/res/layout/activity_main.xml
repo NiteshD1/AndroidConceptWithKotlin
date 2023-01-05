@@ -14,14 +14,42 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:orientation="vertical"
-        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.49">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewThread"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:text="Retrofit Demo"
+            android:gravity="center"
+            android:textSize="24dp"
+            />
 
+        <Button
+            android:id="@+id/buttonFetchData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Fetch Product Data"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.23000002" />
+
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="550dp" />
 
 
 

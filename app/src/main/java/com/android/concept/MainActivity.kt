@@ -14,6 +14,7 @@ import android.os.*
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.android.concept.api.RetrofitInstance
 import com.android.concept.databinding.ActivityMainBinding
 import com.android.concept.utils.Utils
 import com.bumptech.glide.Glide
@@ -50,6 +52,42 @@ class MainActivity : AppCompatActivity() {
 
         Timber.d("Current Thread id : "+Thread.currentThread().id.toString())
 
+        binding.buttonFetchData.setOnClickListener{
+            fetchProductData()
+        }
+    }
+
+    private fun fetchProductData() {
+
+        GlobalScope.launch(Dispatchers.IO){
+
+            val responseProductList = RetrofitInstance.api.getProductList()
+
+            if(responseProductList.isSuccessful){
+
+                var productList : MutableList<String> = mutableListOf()
+
+                responseProductList.body().let {
+
+                    it?.forEach(){
+
+                        Timber.d("Product Data : $it")
+                        val productString = "ProductId : ${it.id} \nProduct Title : ${it.title} \n Product Price : ${it.price}"
+
+                        productList.add(productString)
+                    }
+                }
+
+                withContext(Dispatchers.Main){
+                    val arrayAdapter = ArrayAdapter(this@MainActivity,android.R.layout.simple_list_item_1,productList)
+                    binding.listView.adapter = arrayAdapter
+                }
+            }else{
+                responseProductList.errorBody().let {
+                    Timber.e("Response Error : $it")
+                }
+            }
+        }
     }
 
 
