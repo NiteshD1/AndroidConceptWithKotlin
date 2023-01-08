@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.work.*
 import com.android.concept.databinding.ActivityMainBinding
 import com.android.concept.utils.Utils
 import com.bumptech.glide.Glide
@@ -33,6 +34,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -50,6 +52,39 @@ class MainActivity : AppCompatActivity() {
 
         Timber.d("Current Thread id : "+Thread.currentThread().id.toString())
 
+        binding.buttonStartWorkManager.setOnClickListener{
+            startWorkManager()
+        }
+
+        binding.buttonStopWorkManager.setOnClickListener{
+            stopWorkManager()
+        }
+    }
+
+    private fun stopWorkManager() {
+        WorkManager.getInstance(this).cancelAllWorkByTag("worker")
+    }
+
+    private fun startWorkManager() {
+
+//        val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+//        val oneTimeRequest = OneTimeWorkRequestBuilder<MyWork>()
+//            .setConstraints(constraint)
+//            .addTag("worker")
+//            .setInitialDelay(10,TimeUnit.SECONDS)
+//            .build()
+//
+//        WorkManager.getInstance(this).enqueue(oneTimeRequest)
+
+
+        val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val oneTimeRequest = PeriodicWorkRequestBuilder<MyWork>(15,TimeUnit.MINUTES)
+            .setConstraints(constraint)
+            .addTag("worker")
+            .setInitialDelay(10,TimeUnit.SECONDS)
+            .build()
+
+        WorkManager.getInstance(this).enqueue(oneTimeRequest)
     }
 
 
