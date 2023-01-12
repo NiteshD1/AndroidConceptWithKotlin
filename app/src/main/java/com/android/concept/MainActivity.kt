@@ -46,26 +46,11 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Android Demo"
 
-        var email = MainApplication.prefs?.email
 
-        if(email != null){
-            startDashBoardActivity()
-        }
 
-        binding.buttonSignup.setOnClickListener{
-            if(binding.editTextEmail.text != null && binding.editTextEmail.text.toString() != ""){
-                MainApplication.prefs?.email = binding.editTextEmail.text.toString()
-                startDashBoardActivity()
-            }else{
-                Utils.showToast("Enter your email first!")
-            }
-        }
 
     }
 
-    private fun startDashBoardActivity() {
-        startActivity(Intent(this,DashBoardActivity::class.java))
-    }
 
 
 }
