@@ -10,5 +10,6 @@
 
     <string name="dialog_heading">Proceed With Payment…</string>
     <string name="dialog_description">Press Yes to proceed with the Transaction. Please do not press back, while transaction is processing.</string>
+    <string name="welcome">Welcome!</string>
 
 </resources>
