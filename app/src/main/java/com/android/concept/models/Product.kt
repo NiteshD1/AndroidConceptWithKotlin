@@ -1,11 +1,16 @@
 package com.android.concept.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
+
+@Entity(tableName = "products")
 data class Product(
-    val category: String,
-    val description: String,
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val image: String,
-    val price: Double,
-    val rating: Rating,
-    val title: String
-)
+    @SerializedName("title")
+    val name : String?,
+    val price: Double?,
+    @SerializedName("image")
+    val imageUrl : String?
+    )
