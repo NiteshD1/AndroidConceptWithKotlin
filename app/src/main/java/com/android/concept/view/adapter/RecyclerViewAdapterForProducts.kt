@@ -1,6 +1,5 @@
-package com.android.concept.adapter
+package com.android.concept.view.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +9,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.concept.MainApplication
 import com.android.concept.R
-import com.android.concept.db.room.ProductDatabase
-import com.android.concept.models.Product
+import com.android.concept.controller.MainController
+import com.android.concept.data.db.room.ProductDatabase
+import com.android.concept.data.models.Product
 import com.android.concept.utils.Utils
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class RecyclerViewAdapterForProducts(var productList: MutableList<Product>,val isSavedProducts : Boolean):RecyclerView.Adapter<RecyclerViewAdapterForProducts.ViewHolder>() {
+class RecyclerViewAdapterForProducts(var productList: MutableList<Product>, val isSavedProducts : Boolean):RecyclerView.Adapter<RecyclerViewAdapterForProducts.ViewHolder>() {
 
     val dao = ProductDatabase.getInstance()?.getProductDao()
+    val controller = MainController()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -58,19 +59,11 @@ class RecyclerViewAdapterForProducts(var productList: MutableList<Product>,val i
     }
 
     private suspend fun addProductToDb(product: Product) {
-
-        if(dao?.getById(product.id) == null){
-            dao?.upsert(product)
-            Utils.showToastOnMainThread("Product Saved!")
-        }else{
-            Utils.showToastOnMainThread("Product Already Saved!")
-        }
-
+        controller.addProductToDb(product)
     }
 
     private suspend fun deleteProductFromDb(product: Product) {
-        dao?.deleteProduct(product)
-        Utils.showToastOnMainThread("Product Deleted!")
+        controller.deleteProductFromDb(product)
     }
 
     override fun getItemCount(): Int {

@@ -1,6 +1,6 @@
-package com.android.concept.api
+package com.android.concept.data.api
 
-import com.android.concept.models.Product
+import com.android.concept.data.models.Product
 import retrofit2.Response
 import retrofit2.http.GET
 

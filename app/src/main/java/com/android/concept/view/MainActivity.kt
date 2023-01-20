@@ -1,19 +1,18 @@
-package com.android.concept
+package com.android.concept.view
 
 
 import android.os.*
 import android.view.View
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.concept.adapter.RecyclerViewAdapterForProducts
-import com.android.concept.api.RetrofitInstance
+import com.android.concept.controller.MainController
+import com.android.concept.view.adapter.RecyclerViewAdapterForProducts
+import com.android.concept.data.api.RetrofitInstance
 import com.android.concept.databinding.ActivityMainBinding
-import com.android.concept.db.room.ProductDatabase
-import com.android.concept.models.Product
+import com.android.concept.data.db.room.ProductDatabase
+import com.android.concept.data.models.Product
 import com.android.concept.utils.Utils
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,13 +21,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerViewAdapterForProducts
     private val api = RetrofitInstance.api
     private val dao = ProductDatabase.getInstance()?.getProductDao()
+    private val controller = MainController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        supportActionBar?.title = "Android Demo"
+        supportActionBar?.title = "Fashion Store"
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun displayProductsFromDb() {
 
-        val productList = dao?.getAllProducts()
+        val productList = controller.getSavedProductFromDb()
 
         withContext(Dispatchers.Main){
             setupRecyclerView(productList,true)
@@ -62,25 +62,15 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun displayProductDataFromServer() {
 
-        val responseProductList = api.getProductList()
-
-        if(responseProductList.isSuccessful){
-
-            responseProductList.body().let {
-
-                val productList = it
-                println("Products Data : ${productList.toString()}")
-
-                withContext(Dispatchers.Main){
-                    setupRecyclerView(productList)
-                }
-            }
-        }else{
-            Utils.showToast("Something went wrong,Please try again later!")
+        val productList = controller.getAllProductDataFromServer()
+        withContext(Dispatchers.Main){
+            setupRecyclerView(productList)
         }
+
+
     }
 
-    private fun setupRecyclerView(productList: List<Product>?,isSavedProduct: Boolean = false){
+    private fun setupRecyclerView(productList: List<Product>?, isSavedProduct: Boolean = false){
         binding.progressBar.visibility = View.GONE
 
         adapter = RecyclerViewAdapterForProducts(

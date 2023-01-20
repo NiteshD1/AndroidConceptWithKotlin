@@ -1,4 +1,4 @@
-package com.android.concept.db
+package com.android.concept.data.db
 
 import android.content.Context
 import android.content.SharedPreferences
