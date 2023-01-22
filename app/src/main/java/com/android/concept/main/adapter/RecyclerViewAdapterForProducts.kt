@@ -1,4 +1,4 @@
-package com.android.concept.view.adapter
+package com.android.concept.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +9,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.concept.MainApplication
 import com.android.concept.R
-import com.android.concept.controller.MainController
-import com.android.concept.data.db.room.ProductDatabase
 import com.android.concept.data.models.Product
-import com.android.concept.utils.Utils
+import com.android.concept.main.MainActivityPresenterContract
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class RecyclerViewAdapterForProducts(var productList: MutableList<Product>, val isSavedProducts : Boolean):RecyclerView.Adapter<RecyclerViewAdapterForProducts.ViewHolder>() {
-
-    val dao = ProductDatabase.getInstance()?.getProductDao()
-    val controller = MainController()
+class RecyclerViewAdapterForProducts(var productList: MutableList<Product>, val isSavedProducts : Boolean,val presenterContract: MainActivityPresenterContract):RecyclerView.Adapter<RecyclerViewAdapterForProducts.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -47,24 +42,17 @@ class RecyclerViewAdapterForProducts(var productList: MutableList<Product>, val 
                 productList.remove(product)
                 notifyDataSetChanged()
                 GlobalScope.launch(Dispatchers.IO) {
-                    deleteProductFromDb(product)
+                    presenterContract.deleteProductFromDb(product)
                 }
             }else{
                 GlobalScope.launch(Dispatchers.IO) {
-                    addProductToDb(product)
+                    presenterContract.addProductToDb(product)
                 }
             }
         }
 
     }
 
-    private suspend fun addProductToDb(product: Product) {
-        controller.addProductToDb(product)
-    }
-
-    private suspend fun deleteProductFromDb(product: Product) {
-        controller.deleteProductFromDb(product)
-    }
 
     override fun getItemCount(): Int {
         return productList.size
