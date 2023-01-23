@@ -49,5 +49,5 @@ object CurrencyFactory {
 fun main(){
     var currency = CurrencyFactory.currency(Country.Spain)
 
-    println("${currency.code()} and ${currency.symbol()}")
+    println("Currency Code: ${currency.code()} and Currency Symbol: ${currency.symbol()}")
 }
