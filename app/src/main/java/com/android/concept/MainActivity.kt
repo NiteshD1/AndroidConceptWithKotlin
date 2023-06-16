@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         if(responseProductList.isSuccessful){
 
-            responseProductList.body().let {
+            responseProductList.body()?.let {
 
                 val productList = it
                 println("Products Data : ${productList.toString()}")
